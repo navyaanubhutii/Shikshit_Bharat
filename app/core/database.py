@@ -11,12 +11,7 @@ else:
     engine_kwargs["pool_pre_ping"] = True
     engine_kwargs["pool_recycle"] = 300
 
-try:
-    engine = create_engine(settings.DATABASE_URL, **engine_kwargs)
-except Exception:
-    # Graceful fallback to SQLite for local development or sandbox testing if postgres driver is absent
-    fallback_url = "sqlite:///./shikshit_bharat.db"
-    engine = create_engine(fallback_url, connect_args={"check_same_thread": False})
+engine = create_engine(settings.DATABASE_URL, **engine_kwargs)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -33,5 +28,6 @@ def get_db() -> Generator[Session, None, None]:
 
 
 def init_db() -> None:
-    """Initialize database tables."""
+    """Initialize database tables after registering all ORM models with Base.metadata."""
+    import app.models  # noqa: F401 - ensures all models are imported and registered on Base.metadata
     Base.metadata.create_all(bind=engine)

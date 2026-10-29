@@ -12,9 +12,9 @@ class Settings(BaseSettings):
     HOST: str = Field(default="0.0.0.0", description="Server host")
     PORT: int = Field(default=8000, description="Server port")
 
-    # PostgreSQL as primary production database, with support for local sqlite when running without external DB
+    # Database connection: defaults to local SQLite for development; set to PostgreSQL for production
     DATABASE_URL: str = Field(
-        default="postgresql://postgres:postgres@localhost:5432/shikshit_bharat",
+        default="sqlite:///./shikshit_bharat.db",
         description="Database connection URL"
     )
 

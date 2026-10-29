@@ -62,7 +62,7 @@ Update `DATABASE_URL` in `.env` with your PostgreSQL credentials:
 ```env
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/shikshit_bharat
 ```
-*(Note: If no PostgreSQL server is running, the app can default to SQLite `sqlite:///./shikshit_bharat.db` for instant local inspection).*
+*(Note: For local development without a running PostgreSQL server, configure `DATABASE_URL=sqlite:///./shikshit_bharat.db` in your `.env` file).*
 
 ### 3. Run the Backend
 
