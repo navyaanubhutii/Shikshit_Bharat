@@ -36,6 +36,7 @@ Rather than treating accessibility as an afterthought or a generic switch, Shiks
 
 ### Prerequisites
 - Python 3.10+
+- Node.js 18+ and npm
 - PostgreSQL (or local SQLite for lightweight development)
 
 ### 1. Clone & Set Up Environment
@@ -94,6 +95,56 @@ Interactive API documentation will be available at:
 - `POST /api/v1/announcements` - Post a teacher announcement with sensory urgency metadata
 - `GET /api/v1/announcements/blind` - Announcements ordered by audio queue priority
 - `GET /api/v1/announcements/deaf` - Announcements formatted for visual popups and ISL delivery
+
+---
+
+## 🖥️ Frontend
+
+The frontend is a React + TypeScript + Vite application in `frontend/` with Tailwind CSS and React Router.
+
+### 4. Set Up the Frontend
+
+```bash
+cd frontend
+cp .env.example .env    # defaults to http://localhost:8000/api/v1
+npm install
+npm run dev             # starts dev server on http://localhost:3000
+```
+
+### Entry Routes
+
+| Route | Experience | Description |
+|-------|-----------|-------------|
+| `/` | Gateway | Accessible experience selector with keyboard shortcuts (B/1 or D/2) |
+| `/blind` | Blind (Audio-First) | Keyboard-driven, speech synthesis narration, priority audio cues, Braille display |
+| `/deaf` | Deaf (Visual-First) | ISL SOV glosses, sign tokens, visual alerts, captions, zero audio dependency |
+
+### Frontend Structure
+
+```
+frontend/src/
+├── main.tsx              # React entry point
+├── App.tsx               # Router with /, /blind, /deaf routes
+├── index.css             # Tailwind directives, focus rings, reduced-motion
+├── vite-env.d.ts         # Vite ImportMeta types
+├── types/
+│   ├── api.ts            # Backend response type mirrors
+│   └── accessibility.ts  # Experience mode and speech types
+├── services/
+│   └── api.ts            # Typed fetch client for all backend endpoints
+├── utils/
+│   ├── tts.ts            # Web Speech Synthesis controller
+│   └── preferences.ts    # localStorage experience preference
+├── components/
+│   ├── SkipLink.tsx       # Screen-reader skip navigation
+│   ├── LiveAnnouncer.tsx  # ARIA live region announcer
+│   ├── ModeSwitcher.tsx   # Header bar with mode switch controls
+│   └── StatusBadge.tsx    # Backend connectivity indicator
+└── pages/
+    ├── LandingPage.tsx    # Gateway experience selector
+    ├── BlindEntryPage.tsx # Audio-first entry with TTS and keyboard nav
+    └── DeafEntryPage.tsx  # Visual-first entry with ISL glosses and tabs
+```
 
 ---
 
